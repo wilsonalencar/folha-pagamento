@@ -61,9 +61,8 @@
                     </div>
             <div id="sideNav" href="" onclick="hideIcon()"><i class="material-icons dp48">toc</i></div>
                 </div>
-
                 <ul class="nav navbar-top-links navbar-right"> 
-    				  <li><a class="dropdown-button waves-effect waves-dark active-menu" href="#!" data-activates="dropdown1"><i class="fa fa-user fa-fw"></i> <b><?php echo $_SESSION['folha']['nome']; ?></b> <i class="material-icons right">arrow_drop_down</i></a></li>
+    				  <li><a class="dropdown-button waves-effect waves-dark active-menu" href="#!" data-activates="dropdown1"><i class="fa fa-user fa-fw"></i> <b><?php echo $_SESSION['folha']['nome_usuario']; ?></b> <i class="material-icons right">arrow_drop_down</i></a></li>
                 </ul>
             </nav>
     		<!-- Dropdown Structure -->

@@ -20,18 +20,18 @@ if (!empty($_POST)) {
 }
 
 if (isset($_SESSION['folha']) && !empty($_SESSION['folha']) && !$logout) {
-	@session_destroy();
-	header('LOCATION:/folha-pagamento/'.funcionalidadeConst::LINK_PLATAFORM);
+	$_SESSION['folha'] = array();
+	header('LOCATION:/');die();
 }
 
 if (isset($_SESSION['folha']) && !empty($_SESSION['folha']) && $logout) {
 	@session_destroy();
-	header('LOCATION:/folha-pagamento/'.funcionalidadeConst::LINK_PLATAFORM.'login.php');
+	header('LOCATION:/login.php');die();
 }
 
 if (!isset($_SESSION['folha']['logado']) && empty($_SESSION['folha']['logado'])) {
 	@session_destroy();
-	header('LOCATION:/folha-pagamento/'.funcionalidadeConst::LINK_PLATAFORM.'login.php');
+	header('LOCATION:/login.php');die();
 }
 
 ?>
