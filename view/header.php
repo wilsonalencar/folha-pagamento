@@ -23,7 +23,7 @@
 </head>
     
 <?php 
-    if (isset($_GET['id_empresa'])) {
+    if (isset($_GET['id_empresa']) && !empty($_GET['id_empresa'])) {
         header('LOCATION:/folha-pagamento/');
     }
     $espaco = 0;
@@ -45,7 +45,7 @@
                             <div>
                                 <img src="<?php echo app::dominio; ?>view/assets/img/bravo-icon.png">
                             </div>        
-                            <?php  if ($_GET['id_empresa'] || (isset($_SESSION['folha']['id_empresa']) && !empty($_SESSION['folha']['id_empresa']))  ) { $espaco = 1; 
+                            <?php  if ( (isset($_GET['id_empresa']) && !empty($_GET['id_empresa'])) || (isset($_SESSION['folha']['id_empresa']) && !empty($_SESSION['folha']['id_empresa']))  ) { $espaco = 1; 
                                 $id_empresa = $_SESSION['folha']['id_empresa'];
                                 if ($_SESSION['folha']['id_empresa'] != $_GET['id_empresa']) {
                                     $id_empresa = $_GET['id_empresa'];
@@ -301,7 +301,7 @@
                         </li>
 
                         <li>
-                            <?php if ($_GET['id_empresa'] || (isset($_SESSION['folha']['id_empresa']) && !empty($_SESSION['folha']['id_empresa']))){ ?>
+                            <?php if ((isset($_GET['id_empresa']) && !empty($_GET['id_empresa'])) || (isset($_SESSION['folha']['id_empresa']) && !empty($_SESSION['folha']['id_empresa']))){ ?>
                             <a href="#" class="waves-effect waves-dark active-menu"><i class="fa fa-dot-circle-o"></i> Cockpit<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -312,7 +312,7 @@
                         </li>
 
                         <li>
-                            <?php if ($_GET['id_empresa'] || (isset($_SESSION['folha']['id_empresa']) && !empty($_SESSION['folha']['id_empresa']))){ ?>
+                            <?php if ((isset($_GET['id_empresa']) && !empty($_GET['id_empresa'])) || (isset($_SESSION['folha']['id_empresa']) && !empty($_SESSION['folha']['id_empresa']))){ ?>
                             <a href="#" class="waves-effect waves-dark active-menu"><i class="fa fa-bar-chart-o"></i> Workflow Manager<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>

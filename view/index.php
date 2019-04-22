@@ -5,7 +5,7 @@
 
 <div id="page-wrapper">
 <?php
-	if (!$_GET['id_empresa']) {
+	if (!isset($_GET['id_empresa']) || empty($_GET['id_empresa'])) {
 ?>
 	<div class="header"> 
 		<div class="card" align="center">
@@ -37,7 +37,7 @@
 </form>
 <?php
   } else {
-  	if (!empty($_GET['id_empresa'])) {
+  	if (isset($_GET['id_empresa']) && !empty($_GET['id_empresa'])) {
       $_SESSION['folha']['id_empresa'] = $_GET['id_empresa'];
   	}
   }
