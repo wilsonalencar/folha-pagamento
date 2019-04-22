@@ -19,17 +19,17 @@ if (!empty($_POST)) {
 	}	
 }
 
-if (isset($_SESSION) && !empty($_SESSION) && !$logout) {
+if (isset($_SESSION['folha']) && !empty($_SESSION['folha']) && !$logout) {
 	@session_destroy();
 	header('LOCATION:'.funcionalidadeConst::LINK_PLATAFORM);
 }
 
-if (isset($_SESSION) && !empty($_SESSION) && $logout) {
+if (isset($_SESSION['folha']) && !empty($_SESSION['folha']) && $logout) {
 	@session_destroy();
 	header('LOCATION:'.funcionalidadeConst::LINK_PLATAFORM.'login.php');
 }
 
-if (!isset($_SESSION['logado']) && empty($_SESSION['logado'])) {
+if (!isset($_SESSION['folha']['logado']) && empty($_SESSION['folha']['logado'])) {
 	@session_destroy();
 	header('LOCATION:'.funcionalidadeConst::LINK_PLATAFORM.'login.php');
 }

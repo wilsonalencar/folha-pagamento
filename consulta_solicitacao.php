@@ -4,7 +4,7 @@
     $solicitacao->lista();
     require_once(app::path.'view/header.php');
 
-    $_SESSION['previous_page'] = 'consulta_solicitacao.php';
+    $_SESSION['folha']['previous_page'] = 'consulta_solicitacao.php';
 ?>
 
 <style type="text/css">

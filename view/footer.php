@@ -1,4 +1,4 @@
-<?php if (!empty($_SESSION['logado'])) { ?>
+<?php if (!empty($_SESSION['folha']['logado'])) { ?>
             </div>
         </div>
     </div>

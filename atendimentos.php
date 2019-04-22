@@ -11,7 +11,7 @@ define('FILTRA', 4);
 $solicitacao 				= new solicitacao;
 $usuario 					= new usuario;
 
-$usuario_session 			= $usuario->LoadUsuarioSystem($_SESSION['usuarioid']);
+$usuario_session 			= $usuario->LoadUsuarioSystem($_SESSION['folha']['usuarioid']);
 
 $solicitacao->id									= $solicitacao->getRequest('id', 0);
 $solicitacao->status_id								= $solicitacao->getRequest('status_id', '');
@@ -54,7 +54,7 @@ if ($action == DEL) {
 }
 
 if (empty($_POST['id']) && empty($msg) && !$action == GET) {
-	header("LOCATION:".app::dominio.$_SESSION['previous_page']);
+	header("LOCATION:".app::dominio.$_SESSION['folha']['previous_page']);
 }
 
 

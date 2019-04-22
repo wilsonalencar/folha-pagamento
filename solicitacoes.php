@@ -15,8 +15,8 @@ $usuario 					= new usuario;
 $funcionario 				= new funcionario;
 $solicitacao 				= new solicitacao;
 
-$empresa_session 			= $empresa->LoadEmpresaSystem($_SESSION['id_empresa']);
-$usuario_session 			= $usuario->LoadUsuarioSystem($_SESSION['usuarioid']);
+$empresa_session 			= $empresa->LoadEmpresaSystem($_SESSION['folha']['id_empresa']);
+$usuario_session 			= $usuario->LoadUsuarioSystem($_SESSION['folha']['usuarioid']);
 
 $solicitacao->id									= $solicitacao->getRequest('id', 0);
 $solicitacao->empresa_id 							= $solicitacao->getRequest('empresa_id', '');

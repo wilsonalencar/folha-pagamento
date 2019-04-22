@@ -25,17 +25,17 @@ class usuario extends app
 
 		if (!empty($row = $result->fetch_array(MYSQLI_ASSOC))){
 
-			$_SESSION['usuarioid'] 					= $row['usuarioid'];
- 			$_SESSION['nome_usuario'] 	   			= $row['nome'];
- 			$_SESSION['email_usuario'] 				= $row['email'];
- 			$_SESSION['id_perfilusuario'] 			= $row['id_perfilusuario'];
- 			$_SESSION['reset_senha'] 				= $row['reset_senha'];
+			$_SESSION['folha']['usuarioid'] 					= $row['usuarioid'];
+ 			$_SESSION['folha']['nome_usuario'] 	   			= $row['nome'];
+ 			$_SESSION['folha']['email_usuario'] 				= $row['email'];
+ 			$_SESSION['folha']['id_perfilusuario'] 			= $row['id_perfilusuario'];
+ 			$_SESSION['folha']['reset_senha'] 				= $row['reset_senha'];
  			
  			if (!empty($row['usuarioid'])) {
- 				$_SESSION['usuarioid']     = $row['usuarioid'];
+ 				$_SESSION['folha']['usuarioid']     = $row['usuarioid'];
  			}
  			
- 			$_SESSION['logado'] 				= 1;	
+ 			$_SESSION['folha']['logado'] 				= 1;	
  			
  			return true;		
 		}

@@ -29,7 +29,7 @@
     $espaco = 0;
 ?>
 
-<?php if (!empty($_SESSION['logado']) && $_SERVER['SCRIPT_NAME'] != '/login.php') { ?>
+<?php if (!empty($_SESSION['folha']['logado']) && $_SERVER['SCRIPT_NAME'] != '/login.php') { ?>
     <body>
         <div id="wrapper">
             <nav class="navbar navbar-default top-navbar" role="navigation">
@@ -45,15 +45,15 @@
                             <div>
                                 <img src="<?php echo app::dominio; ?>view/assets/img/bravo-icon.png">
                             </div>        
-                            <?php  if ($_GET['id_empresa'] || $_SESSION['id_empresa']) { $espaco = 1; 
-                                $id_empresa = $_SESSION['id_empresa'];
-                                if ($_SESSION['id_empresa'] != $_GET['id_empresa']) {
+                            <?php  if ($_GET['id_empresa'] || $_SESSION['folha']['id_empresa']) { $espaco = 1; 
+                                $id_empresa = $_SESSION['folha']['id_empresa'];
+                                if ($_SESSION['folha']['id_empresa'] != $_GET['id_empresa']) {
                                     $id_empresa = $_GET['id_empresa'];
                                 }
                                 ?>
                             <div style="height: 12px"></div>                      
                             <div id="icon">
-                                <img style="width: 130px; height: 70px; margin-left: 40px; position: sticky;" src="<?php echo app::dominio; ?>view/assets/logo/logo-<?php echo $_SESSION['id_empresa']; ?>.png">
+                                <img style="width: 130px; height: 70px; margin-left: 40px; position: sticky;" src="<?php echo app::dominio; ?>view/assets/logo/logo-<?php echo $_SESSION['folha']['id_empresa']; ?>.png">
                             </div>  
 
                             <?php } ?>
@@ -63,7 +63,7 @@
                 </div>
 
                 <ul class="nav navbar-top-links navbar-right"> 
-    				  <li><a class="dropdown-button waves-effect waves-dark active-menu" href="#!" data-activates="dropdown1"><i class="fa fa-user fa-fw"></i> <b><?php echo $_SESSION['nome']; ?></b> <i class="material-icons right">arrow_drop_down</i></a></li>
+    				  <li><a class="dropdown-button waves-effect waves-dark active-menu" href="#!" data-activates="dropdown1"><i class="fa fa-user fa-fw"></i> <b><?php echo $_SESSION['folha']['nome']; ?></b> <i class="material-icons right">arrow_drop_down</i></a></li>
                 </ul>
             </nav>
     		<!-- Dropdown Structure -->
@@ -254,7 +254,7 @@
                         </li>
 
                         <li>
-                            <?php if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::PERFIL_ADMIN){ ?>
+                            <?php if ($_SESSION['folha']['id_perfilusuario'] == funcionalidadeConst::PERFIL_ADMIN){ ?>
                             <a href="#" class="waves-effect waves-dark active-menu"><i class="fa fa-cog"></i> Configuration<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -301,7 +301,7 @@
                         </li>
 
                         <li>
-                            <?php if ($_GET['id_empresa'] || !empty($_SESSION['id_empresa'])){ ?>
+                            <?php if ($_GET['id_empresa'] || !empty($_SESSION['folha']['id_empresa'])){ ?>
                             <a href="#" class="waves-effect waves-dark active-menu"><i class="fa fa-dot-circle-o"></i> Cockpit<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -312,7 +312,7 @@
                         </li>
 
                         <li>
-                            <?php if ($_GET['id_empresa'] || $_SESSION['id_empresa'] != ''){ ?>
+                            <?php if ($_GET['id_empresa'] || $_SESSION['folha']['id_empresa'] != ''){ ?>
                             <a href="#" class="waves-effect waves-dark active-menu"><i class="fa fa-bar-chart-o"></i> Workflow Manager<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>

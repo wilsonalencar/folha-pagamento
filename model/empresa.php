@@ -14,7 +14,7 @@ class empresa extends app
 	public function montaSelectEmpresa($selected=0)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = " SELECT A.id, A.razao_social FROM empresa A where A.status = '".$this::STATUS_SISTEMA_ATIVO."' and A.id in (select id_empresa from permissaoempresas where id_usuario = ".$_SESSION['usuarioid'].") order by A.razao_social;";
+		$query = " SELECT A.id, A.razao_social FROM empresa A where A.status = '".$this::STATUS_SISTEMA_ATIVO."' and A.id in (select id_empresa from permissaoempresas where id_usuario = ".$_SESSION['folha']['usuarioid'].") order by A.razao_social;";
 
 		if($result = $conn->query($query))
 		{
@@ -27,7 +27,7 @@ class empresa extends app
 	public function montaSelectEventoEmpresa($selected=0)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT A.id, A.descricao FROM eventos A INNER JOIN eventosempresa B ON A.id =  B.evento_id WHERE A.status = '%s' AND B.empresa_id = %d ORDER BY A.descricao", $this::STATUS_SISTEMA_ATIVO, $_SESSION['id_empresa']);
+		$query = sprintf("SELECT A.id, A.descricao FROM eventos A INNER JOIN eventosempresa B ON A.id =  B.evento_id WHERE A.status = '%s' AND B.empresa_id = %d ORDER BY A.descricao", $this::STATUS_SISTEMA_ATIVO, $_SESSION['folha']['id_empresa']);
 
 		if($result = $conn->query($query))
 		{

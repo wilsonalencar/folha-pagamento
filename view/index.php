@@ -21,7 +21,7 @@
 		<div class="col-md-10">
             <select id="id_empresa" class="form-control">
                 <option value="" disabled selected="">Empresas</option>
-                <?php $empresa->montaSelectEmpresa($_SESSION['id_empresa']); ?>
+                <?php $empresa->montaSelectEmpresa($_SESSION['folha']['id_empresa']); ?>
             </select>
 		</div>
 		<div class="col-md-1">
@@ -38,7 +38,7 @@
 <?php
   } else {
   	if (!empty($_GET['id_empresa'])) {
-      $_SESSION['id_empresa'] = $_GET['id_empresa'];
+      $_SESSION['folha']['id_empresa'] = $_GET['id_empresa'];
   	}
   }
   require_once(app::path.'view/footer.php');

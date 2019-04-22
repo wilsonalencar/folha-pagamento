@@ -37,7 +37,7 @@ class solicitacao extends app
 	public function montaSelectNumSolicitacao($selected=0)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT id FROM solicitacao WHERE empresa_id = %d", $_SESSION['id_empresa']);
+		$query = sprintf("SELECT id FROM solicitacao WHERE empresa_id = %d", $_SESSION['folha']['id_empresa']);
 
 		if($result = $conn->query($query))
 		{
@@ -50,7 +50,7 @@ class solicitacao extends app
 	public function montaSelectSolicitante($selected=0)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT DISTINCT A.usuarioid, A.nome FROM usuarios A INNER JOIN solicitacao B ON B.id_usuariosolicitante = A.usuarioid WHERE B.empresa_id = %d ORDER BY A.nome ", $_SESSION['id_empresa']);
+		$query = sprintf("SELECT DISTINCT A.usuarioid, A.nome FROM usuarios A INNER JOIN solicitacao B ON B.id_usuariosolicitante = A.usuarioid WHERE B.empresa_id = %d ORDER BY A.nome ", $_SESSION['folha']['id_empresa']);
 
 		if($result = $conn->query($query))
 		{
@@ -286,7 +286,7 @@ class solicitacao extends app
 	public function lista()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT A.id, A.data_solicitacao, A.id_usuariosolicitante, A.evento_id, B.nome as nome_usuario, C.descricao as evento, A.descricao_solicitacao, A.status_id, D.descricao as status FROM solicitacao A INNER JOIN usuarios B ON A.id_usuariosolicitante = B.usuarioid INNER JOIN eventos C ON A.evento_id = C.id INNER JOIN statussolicitacao D ON A.status_id = D.id WHERE A.empresa_id = %d AND A.status_id IN (1,2,3)", $_SESSION['id_empresa']);
+		$query = sprintf("SELECT A.id, A.data_solicitacao, A.id_usuariosolicitante, A.evento_id, B.nome as nome_usuario, C.descricao as evento, A.descricao_solicitacao, A.status_id, D.descricao as status FROM solicitacao A INNER JOIN usuarios B ON A.id_usuariosolicitante = B.usuarioid INNER JOIN eventos C ON A.evento_id = C.id INNER JOIN statussolicitacao D ON A.status_id = D.id WHERE A.empresa_id = %d AND A.status_id IN (1,2,3)", $_SESSION['folha']['id_empresa']);
 
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento das solicitações";	
@@ -302,56 +302,56 @@ class solicitacao extends app
 	public function listaAtendimento($array)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = "SELECT A.id, A.data_solicitacao, A.id_usuariosolicitante, A.evento_id, B.nome as nome_usuario, C.descricao as evento, A.descricao_solicitacao, A.status_id, D.descricao as status, F.nome as nome_funcionario FROM solicitacao A INNER JOIN usuarios B ON A.id_usuariosolicitante = B.usuarioid INNER JOIN eventos C ON A.evento_id = C.id INNER JOIN statussolicitacao D ON A.status_id = D.id INNER JOIN solicitacaofuncionario E ON A.id = E.solicitacao_id INNER JOIN funcionarios F ON E.funcionario_id = F.id WHERE A.empresa_id = ".$_SESSION['id_empresa'];
+		$query = "SELECT A.id, A.data_solicitacao, A.id_usuariosolicitante, A.evento_id, B.nome as nome_usuario, C.descricao as evento, A.descricao_solicitacao, A.status_id, D.descricao as status, F.nome as nome_funcionario FROM solicitacao A INNER JOIN usuarios B ON A.id_usuariosolicitante = B.usuarioid INNER JOIN eventos C ON A.evento_id = C.id INNER JOIN statussolicitacao D ON A.status_id = D.id INNER JOIN solicitacaofuncionario E ON A.id = E.solicitacao_id INNER JOIN funcionarios F ON E.funcionario_id = F.id WHERE A.empresa_id = ".$_SESSION['folha']['id_empresa'];
 
 		if (!empty($array['clear'])) {
-			$_SESSION['filtro']['status_id'] = '';
-			$_SESSION['filtro']['id'] = '';
-			$_SESSION['filtro']['funcionario'] = '';
-			$_SESSION['filtro']['solicitante'] = '';
-			$_SESSION['filtro']['data_busca_periodo'] = '';
+			$_SESSION['folha']['filtro']['status_id'] = '';
+			$_SESSION['folha']['filtro']['id'] = '';
+			$_SESSION['folha']['filtro']['funcionario'] = '';
+			$_SESSION['folha']['filtro']['solicitante'] = '';
+			$_SESSION['folha']['filtro']['data_busca_periodo'] = '';
 		}
 		
 		if (!empty($array['status_id'])) {
-			$_SESSION['filtro']['status_id'] = $array['status_id'];
+			$_SESSION['folha']['filtro']['status_id'] = $array['status_id'];
 		}
-		$status_id = $_SESSION['filtro']['status_id'];
+		$status_id = $_SESSION['folha']['filtro']['status_id'];
 
 		if (!empty($status_id)) {
 			$query .= ' AND A.status_id = '.$status_id;
 		}
 
 		if (!empty($array['id'])) {
-			$_SESSION['filtro']['id'] = $array['id'];
+			$_SESSION['folha']['filtro']['id'] = $array['id'];
 		}
-		$id = $_SESSION['filtro']['id'];
+		$id = $_SESSION['folha']['filtro']['id'];
 
 		if (!empty($id)) {
 			$query .= ' AND A.id = '.$id;
 		}
 
 		if (!empty($array['solicitante'])) {
-			$_SESSION['filtro']['solicitante'] = $array['solicitante'];
+			$_SESSION['folha']['filtro']['solicitante'] = $array['solicitante'];
 		}
-		$solicitante = $_SESSION['filtro']['solicitante'];
+		$solicitante = $_SESSION['folha']['filtro']['solicitante'];
 
 		if (!empty($solicitante)) {
 			$query .= ' AND A.id_usuariosolicitante = '.$solicitante;
 		}
 
 		if (!empty($array['funcionario'])) {
-			$_SESSION['filtro']['funcionario'] = $array['funcionario'];
+			$_SESSION['folha']['filtro']['funcionario'] = $array['funcionario'];
 		}
-		$funcionario = $_SESSION['filtro']['funcionario'];
+		$funcionario = $_SESSION['folha']['filtro']['funcionario'];
 
 		if (!empty($funcionario)) {
 			$query .= ' AND E.funcionario_id = '.$funcionario;
 		}
 
 		if (!empty($array['data_busca_periodo'])) {
-			$_SESSION['filtro']['data_busca_periodo'] = $array['data_busca_periodo'];
+			$_SESSION['folha']['filtro']['data_busca_periodo'] = $array['data_busca_periodo'];
 		}
-		$data_busca_periodo = $_SESSION['filtro']['data_busca_periodo'];
+		$data_busca_periodo = $_SESSION['folha']['filtro']['data_busca_periodo'];
 
 		if (!empty($data_busca_periodo)) {
 			$query .= ' AND DATE_FORMAT(A.data_solicitacao, "%Y-%m-%d") = "'.$data_busca_periodo.'"';

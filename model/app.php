@@ -22,7 +22,7 @@ class app extends config
  	
  	private function validLogin()
  	{
- 		if (empty($_SESSION) && $_SERVER['SCRIPT_NAME'] != '/login.php') {
+ 		if (empty($_SESSION['folha']) && $_SERVER['SCRIPT_NAME'] != '/login.php') {
  			header('LOCATION:login.php');
  		}
  	}
@@ -231,11 +231,11 @@ class app extends config
 		$file = $_SERVER['SCRIPT_NAME'];
 		$funcConst = new funcionalidadeConst;
 		
-		if ((!empty($_SESSION)) && $_SESSION['reset_senha'] == $funcConst::RESET_TRUE && $file <> '/reset_senha.php') {
+		if ((!empty($_SESSION['folha'])) && $_SESSION['folha']['reset_senha'] == $funcConst::RESET_TRUE && $file <> '/reset_senha.php') {
 			header('LOCATION:reset_senha.php');
 		}
 
-		if ((!empty($_SESSION)) && $file == '/reset_senha.php' && $_SESSION['reset_senha'] == $funcConst::RESET_FALSE) {
+		if ((!empty($_SESSION['folha'])) && $file == '/reset_senha.php' && $_SESSION['folha']['reset_senha'] == $funcConst::RESET_FALSE) {
 			return false;
 		}
 		

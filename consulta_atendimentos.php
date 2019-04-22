@@ -7,7 +7,7 @@
     $solicitacao->listaAtendimento($_POST);
     require_once(app::path.'view/header.php');
 
-    $_SESSION['previous_page'] = 'consulta_atendimentos.php';
+    $_SESSION['folha']['previous_page'] = 'consulta_atendimentos.php';
 ?>
 
 <style type="text/css">

@@ -26,7 +26,7 @@ class funcionario extends app
 	public function montaSelectFuncionarioSolicitacao($selected=0)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT id, codigo, nome FROM funcionarios WHERE empresa_id = '".$_SESSION['id_empresa']."'");
+		$query = sprintf("SELECT id, codigo, nome FROM funcionarios WHERE empresa_id = '".$_SESSION['folha']['id_empresa']."'");
 
 		if($result = $conn->query($query))
 		{
