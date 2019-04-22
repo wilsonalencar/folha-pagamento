@@ -24,7 +24,7 @@
     
 <?php 
     if (isset($_GET['id_empresa'])) {
-        header('LOCATION: /');
+        header('LOCATION:/folha-pagamento/');
     }
     $espaco = 0;
 ?>

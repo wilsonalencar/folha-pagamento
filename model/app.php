@@ -15,7 +15,7 @@ class app extends config
  		$this->getDB = new dba;
 
  		if (!$this->validAccess()) {
- 			header('LOCATION:index.php');
+ 			header('LOCATION:/folha-pagamento/index.php');
  			//redireciona
  		}
  	}
@@ -23,7 +23,7 @@ class app extends config
  	private function validLogin()
  	{
  		if (empty($_SESSION['folha']) && $_SERVER['SCRIPT_NAME'] != '/login.php') {
- 			header('LOCATION:login.php');
+ 			header('LOCATION:/folha-pagamento/login.php');
  		}
  	}
  	
@@ -232,7 +232,7 @@ class app extends config
 		$funcConst = new funcionalidadeConst;
 		
 		if ((!empty($_SESSION['folha'])) && $_SESSION['folha']['reset_senha'] == $funcConst::RESET_TRUE && $file <> '/reset_senha.php') {
-			header('LOCATION:reset_senha.php');
+			header('LOCATION:/folha-pagamento/reset_senha.php');
 		}
 
 		if ((!empty($_SESSION['folha'])) && $file == '/reset_senha.php' && $_SESSION['folha']['reset_senha'] == $funcConst::RESET_FALSE) {

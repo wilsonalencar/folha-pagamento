@@ -24,7 +24,7 @@ if ($action == SAVE) {
 	$msg     = $empresa->msg; 
 	
 	if ($success) {
-		header("LOCATION:empresas.php?id=".$empresa->id."&msg=".$msg."&success=".$success);
+		header("LOCATION:/folha-pagamento/empresas.php?id=".$empresa->id."&msg=".$msg."&success=".$success);
 	}
 }
 

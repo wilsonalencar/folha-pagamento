@@ -54,7 +54,7 @@ if ($action == DEL) {
 }
 
 if (empty($_POST['id']) && empty($msg) && !$action == GET) {
-	header("LOCATION:".app::dominio.$_SESSION['folha']['previous_page']);
+	header("LOCATION:/folha-pagamento/".app::dominio.$_SESSION['folha']['previous_page']);
 }
 
 

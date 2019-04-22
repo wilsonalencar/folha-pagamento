@@ -14,24 +14,24 @@ if (!empty($_POST)) {
 	$msg = $usuario->msg;
 	
 	if ($success) {	
-		header('LOCATION:/');
+		header('LOCATION:/folha-pagamento/');
 		exit();
 	}	
 }
 
 if (isset($_SESSION['folha']) && !empty($_SESSION['folha']) && !$logout) {
 	@session_destroy();
-	header('LOCATION:'.funcionalidadeConst::LINK_PLATAFORM);
+	header('LOCATION:/folha-pagamento/'.funcionalidadeConst::LINK_PLATAFORM);
 }
 
 if (isset($_SESSION['folha']) && !empty($_SESSION['folha']) && $logout) {
 	@session_destroy();
-	header('LOCATION:'.funcionalidadeConst::LINK_PLATAFORM.'login.php');
+	header('LOCATION:/folha-pagamento/'.funcionalidadeConst::LINK_PLATAFORM.'login.php');
 }
 
 if (!isset($_SESSION['folha']['logado']) && empty($_SESSION['folha']['logado'])) {
 	@session_destroy();
-	header('LOCATION:'.funcionalidadeConst::LINK_PLATAFORM.'login.php');
+	header('LOCATION:/folha-pagamento/'.funcionalidadeConst::LINK_PLATAFORM.'login.php');
 }
 
 ?>

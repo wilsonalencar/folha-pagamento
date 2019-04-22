@@ -61,7 +61,7 @@ if ($action == SAVE) {
 	}
 
 	if ($success) {
-		header("LOCATION:solicitacoes.php?id=".$solicitacao->id."&msg=".$msg."&success=".$success);
+		header("LOCATION:/folha-pagamento/solicitacoes.php?id=".$solicitacao->id."&msg=".$msg."&success=".$success);
 	}
 }
 

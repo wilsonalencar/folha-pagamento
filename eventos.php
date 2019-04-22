@@ -19,7 +19,7 @@ if ($action == SAVE) {
 	$msg     = $evento->msg; 
 	
 	if ($success) {
-		header("LOCATION:eventos.php?id=".$evento->id."&msg=".$msg."&success=".$success);
+		header("LOCATION:/folha-pagamento/eventos.php?id=".$evento->id."&msg=".$msg."&success=".$success);
 	}
 }
 
