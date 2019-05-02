@@ -42,6 +42,7 @@
                      ?>
 
                     <form class="col s12" action="empresas.php" method="post" name="cad_empresa">
+                      
                       <div class="row">
                         <div class="col s6">
                         <label for="razao_social">Razão Social</label>
@@ -73,7 +74,7 @@
                           <div class="col s3">
                             <label for="id_eventos">Eventos</label>
                             <select id="id_eventos" name="id_eventos[]" multiple class="form-control input-sm">
-                              <?php $evento->montaSelectEvento(); ?>
+                              <?php $evento->montaSelectEvento($empresa->id); ?>
                             </select>
                           </div>
                       </div>

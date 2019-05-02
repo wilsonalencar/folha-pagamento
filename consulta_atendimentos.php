@@ -69,7 +69,6 @@
                                           <th style="width: 10%">Data</th>
                                           <th style="width: 10%">Solicitante</th>
                                           <th style="width: 15%">Evento</th>
-                                          <th style="width: 15%">Funcionário</th>
                                           <th style="width: 30%">Descrição</th>
                                           <th style="width: 10%">Status</th>
                                           <th style="width: 5%">Detalhe</th>
@@ -84,7 +83,6 @@
                                               <td><?php echo $row['data_solicitacao']; ?></td>
                                               <td><?php echo utf8_decode($row['nome_usuario']); ?></td>
                                               <td><?php echo utf8_decode($row['evento']); ?></td>
-                                              <td><?php echo utf8_decode($row['nome_funcionario']); ?></td>
                                               <td><?php echo utf8_decode($row['descricao_solicitacao']); ?></td>
                                               <td><?php echo utf8_encode($row['status']); ?></td>
                                               <td>

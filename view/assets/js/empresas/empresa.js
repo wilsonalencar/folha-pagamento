@@ -28,7 +28,6 @@ function getDataEmpresa(id)
             $("#nome_fantasia").val(d.data.nome_fantasia);
             $("#cnpj").val(d.data.cnpj);
             $("#status").val(d.data.status);
-            $("#id_eventos").val(d.data.id_eventos);
         }
     });
 }

@@ -10,7 +10,7 @@ class anexo extends app
 	public $msg;
 
 	private $dir = 'files/';
-	private $typesSolic = array('application/pdf','text/pdf', 'image/jpeg', 'image/png', 'image/pjpeg', 'application/word', 'application/msword', 'plain/text');
+	private $typesSolic = array('application/pdf','text/pdf', 'image/jpeg', 'image/png', 'image/pjpeg', 'application/word', 'application/msword', 'plain/text', 'application/excel', 'text/html', 'text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
 	private $permissionSize = 1024 * 1000;
 
 	const FILE_SOLICITACAO = 'solic';

@@ -9,7 +9,6 @@
 
   $solicitacao->getAtendimento($id);
   $value = $solicitacao->array;
-
   require_once(app::path.'view/header.php');
 ?>
 
@@ -106,7 +105,7 @@
                         </div>
                       </div>
 
-                      <div class="row">
+                      <div class="row" id="div_funcionario">
                         <div class="col s6">
                           <label for="funcionario">Funcionário</label>
                           <input type="text" id="funcionario" name="funcionario" maxlength="255" readonly="" value="<?php  echo $value['nome_funcionario']; ?>">
@@ -115,28 +114,27 @@
                       </div>
 
                       <div class="row">                        
-                        <div class="">
-                            <?php 
-                              if (!empty($solicitacao->id)) { 
-
-                                 $pasta = app::path.'files/arquivo_solicitacao';
-                                 if (is_dir($pasta)) {
-                                    $diretorio = dir($pasta);
-                                    while($arquivo = $diretorio -> read()){
-                                       if ($solicitacao->id == preg_replace("/[^0-9]/", "", $arquivo)) {
-                                          echo "<a href='".app::dominio.'files/arquivo_solicitacao/'.$arquivo."' target='_blank'>Visualizar Documento </a>";
-                                          echo "<input type='hidden' name='file' id='file' value='".$pasta.'/'.$arquivo."'>";
-                                          echo "<input type='hidden' name='excluir_anexo' id='excluir_anexo' value='0'>";
-                                          echo " -- <a href='#' onclick='excluir_anexo();'>Excluir </a>";
-                                       }
-                                    }
-                                 }
-                              } 
-                            ?><br>
-                        </div>
                         <div class="col s5">
-                            <label for="documentos">Documentos</label>
-                            <input type="file" id="documentos[]" name="documentos[]" multiple="multiple" disabled=""><br/>
+                             <div class="">
+                              <label for="documentos">Documentos</label><br />
+                              <?php 
+                                if (!empty($value['id'])) { 
+
+                                  $pasta = app::path.'files/arquivo_solicitacao/'.$value['id'];
+                                  if (is_dir($pasta)) {
+                                    $diretorio = dir($pasta);
+
+                                    while($arquivo =  $diretorio -> read()){
+                                      if ($arquivo != "." && $arquivo != "..") {
+                                        echo "<a href='".app::dominio.'files/arquivo_solicitacao/'.$value['id'].'/'.$arquivo."' target='_blank'>".$arquivo."</a><br />";
+                                        /*echo "<a href='".app::dominio.'files/arquivo_solicitacao/'.$value['id'].'/'.$arquivo."' target='_blank'>Visualizar Documento </a><br />";
+                                        echo "<input type='hidden' name='file' id='file' value='".$pasta.'/'.$arquivo."'>";*/
+                                      }
+                                    }
+                                  }
+                                } 
+                              ?><br>
+                            </div>
                         </div>
                       </div>
 
@@ -184,11 +182,6 @@
                       <div class="row">
                       <div class="input-field">
                       </div>
-                        <input type="hidden" id="id" name="id" value="<?php echo $value['id']; ?>">
-                        <input type="hidden" id="data_inicio_atend" name="data_inicio_atend" value="<?php echo date("Y-m-d"); ?>">
-                        <input type="hidden" id="aceite_encerramento" name="aceite_encerramento" value="<?php  echo $usuario_session['nome'];?>">
-                        <input type="hidden" id="id_usuarioatendente" name="id_usuarioatendente" value="<?php  echo $usuario_session['usuarioid'];?>">
-                        <input type="hidden" id="action" name="action" value="1">
                         <div class="input-field col s2">
                             <a href="<?php echo app::dominio; ?>consulta_atendimentos.php"  class="waves-effect waves-light btn">Voltar</a>
                         </div>
@@ -214,5 +207,12 @@
 <script type="text/javascript">
   
   $(':radio:not(:checked)').attr('disabled', true);
+
+  window.onload = function(e){ 
+    if (document.getElementById("tipo_g").checked) {
+      var div = document.getElementById("div_funcionario");
+      div.style.display = "none";
+    }; 
+  }
 
 </script>

@@ -67,7 +67,7 @@
                         <label for="evento_id">Evento</label>
                           <select id="evento_id" name="evento_id" class="form-control input-sm">
                             <option value="" disabled selected="">Evento</option>
-                            <?php $empresa->montaSelectEventoEmpresa(); ?>
+                            <?php $empresa->montaSelectEventoEmpresa($solicitacao->evento_id); ?>
                           </select>
                         </div>
                       </div>
@@ -75,9 +75,9 @@
                       <div class="row">
                         <div class="col s6">
                             <label>Tipo</label><br>
-                            <input type="radio" checked id="tipo_f" name="tipo" value="F"/>
+                            <input type="radio" <?php if ($solicitacao->tipo == 'F') { echo 'checked'; } ?> checked id="tipo_f" name="tipo" value="F" onclick="show_func()"/>
                             <label for="tipo_f">Funcionário</label>
-                            <input type="radio" id="tipo_g" name="tipo" value="G" />
+                            <input type="radio" <?php if ($solicitacao->tipo == 'G') { echo 'checked'; } ?> id="tipo_g" name="tipo" value="G" onclick="esconde_func()" />
                             <label for="tipo_g">Geral</label>
                         </div>
                       </div>
@@ -85,16 +85,16 @@
                       <div class="row">
                         <div class="col s10">
                         <label for="descricao_solicitacao">Descrição</label>
-                          <textarea name="descricao_solicitacao" id="descricao_solicitacao" class="validate" style="height:150px;" value="<?php echo $solicitacao->descricao_solicitacao; ?>"></textarea>
+                          <textarea name="descricao_solicitacao" id="descricao_solicitacao" class="validate" style="height:150px;"><?php echo $solicitacao->descricao_solicitacao; ?></textarea>
                         </div>
                       </div>
 
-                      <div class="row">
+                      <div class="row" id="div_funcionario">
                         <div class="col s6">
                         <label for="funcionario_id">Funcionário</label>
                           <select id="funcionario_id" name="funcionario_id" class="form-control input-sm">
                             <option value="" disabled selected="">Funcionário</option>
-                            <?php $funcionario->montaSelectFuncionarioSolicitacao(); ?>
+                            <?php $funcionario->montaSelectFuncionarioSolicitacao($solicitacao->funcionario_id); ?>
                           </select>
                         </div>
                       </div>
@@ -152,5 +152,24 @@
 <?php
 	require_once(app::path.'/view/footer.php');
 ?>
+
+<script type="text/javascript">
+  function esconde_func(){
+    var div = document.getElementById("div_funcionario");
+    div.style.display = "none";
+  }
+
+  function show_func(){
+    var div = document.getElementById("div_funcionario");
+    div.style.display = "block";
+  }
+
+  window.onload = function(e){ 
+    if (document.getElementById("tipo_g").checked) {
+      var div = document.getElementById("div_funcionario");
+      div.style.display = "none";
+    }; 
+  }
+</script>
 
 <script src="<?php echo app::dominio; ?>view/assets/js/solicitacoes/solicitacao.js"></script>

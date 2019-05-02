@@ -6,6 +6,7 @@ define('SAVE', 1);
 define('GET', 2);
 define('DEL', 3);
 define('FILTRA', 4);
+define('AJAX', 5);
 
 
 $solicitacao 				= new solicitacao;
@@ -45,6 +46,10 @@ if ($action == GET) {
 	require_once('view/atendimentos/frm_detalhe_solic.php');
 	exit;
 }
+if ($action == AJAX) {
+	echo json_encode(array('success'=>$solicitacao->get($solicitacao->getRequest('id')), 'msg'=>$solicitacao->msg, 'data'=>$solicitacao->array));
+	exit;
+}
 
 if ($action == DEL) {
 	$success = $solicitacao->deleta($solicitacao->id);
@@ -54,7 +59,7 @@ if ($action == DEL) {
 }
 
 if (empty($_POST['id']) && empty($msg) && !$action == GET) {
-	header("LOCATION:/folha-pagamento/".app::dominio.$_SESSION['folha']['previous_page']);
+	header("LOCATION:".app::dominio.$_SESSION['folha']['previous_page']);
 }
 
 

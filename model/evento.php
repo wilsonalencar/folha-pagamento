@@ -7,7 +7,7 @@ class evento extends app
 	public $descricao;
 	public $status;
 
-	public function montaSelectEvento()
+	/*public function montaSelectEvento($selected=0)
 	{
 		$conn = $this->getDB->mysqli_connection;
 		$query = sprintf("SELECT id,descricao FROM eventos WHERE status = '%s' ORDER BY descricao", $this::STATUS_SISTEMA_ATIVO);
@@ -16,6 +16,30 @@ class evento extends app
 		{
 			while($row = $result->fetch_array(MYSQLI_ASSOC))
 			echo sprintf("<option %s value='%d'>%s</option>\n", $selected == $row['id'] ? "selected" : "",
+			$row['id'], utf8_decode($row['descricao']));
+		}
+	}*/
+
+	public function montaSelectEvento($id=0)
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$arr = array();
+	
+		if (!empty($id)) {
+			$original = 'SELECT evento_id FROM eventosempresa where empresa_id = "'.$id.'"';
+			if($result_original = $conn->query($original))
+			{
+				while ($evento = $result_original->fetch_array(MYSQLI_ASSOC)) {
+					$arr[$evento['evento_id']] = 1;
+				}
+			}
+		}
+
+		$query = sprintf("SELECT id,descricao FROM eventos WHERE status = '%s' ORDER BY descricao", $this::STATUS_SISTEMA_ATIVO);
+		if($result = $conn->query($query))
+		{
+			while($row = $result->fetch_array(MYSQLI_ASSOC))
+			echo sprintf("<option %s value='%d'>%s</option>\n", array_key_exists($row['id'], $arr) ? "selected" : "",
 			$row['id'], utf8_decode($row['descricao']));
 		}
 	}

@@ -2,8 +2,8 @@
 
 class config extends dba
 {
-const  dominio = 'http://dev.folhapagto/';
-const  path    = '/var/www/html/folhapagto/';
+const  dominio = 'http://dev.platform/folha-pagamento/';
+const  path    = '/var/www/html/plataforma/folha-pagamento/';
 }
 
 class dba 

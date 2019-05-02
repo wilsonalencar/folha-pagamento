@@ -4,6 +4,7 @@
     $funcionario->lista();
     require_once(app::path.'view/header.php');
 ?>
+
 <div id="page-wrapper">
 <div class="header"> 
             <h1 class="page-header">
@@ -53,7 +54,7 @@
                                                 <th style="width: 10%">Código Funcionário</th>
                                                 <th style="width: 20%">Nome</th>
                                                 <th style="width: 20%">CPF</th>
-                                                <th style="width: 20%">Empresa</th>
+                                                <th style="width: 30%">Empresa</th>
                                                 <th style="width: 10%">Data Cadastro</th>
                                                 <th style="width: 10%">Alterar</th>
                                             </tr>
@@ -97,26 +98,37 @@ $(document).ready(function (){
         buttons: [
              {
                 extend: 'copyHtml5',
+                pageSize: 'A4',
+                title: 'Configuration - Funcionários',
                 exportOptions: {
                    columns: [ 0, 1, 2, 3, 4, 5]
                 }
              },
              {
                 extend: 'excelHtml5',
+                pageSize: 'A4',
+                title: 'Configuration - Funcionários',
                 exportOptions: {
                    columns: [ 0, 1, 2, 3, 4, 5]
                 }
              },
              {
                 extend: 'csvHtml5',
+                pageSize: 'A4',
+                title: 'Configuration - Funcionários',
                 exportOptions: {
                    columns: [ 0, 1, 2, 3, 4, 5]
                 }
              },
              {
                 extend: 'pdfHtml5',
+                pageSize: 'A4',
+                title: 'Configuration - Funcionários',
                 exportOptions: {
                    columns: [ 0, 1, 2, 3, 4, 5]
+                },
+                customize : function(doc) {
+                    doc.content[1].table.widths = [ '5%', '10%', '30%', '15%', '30%', '14%'];
                 }
              },
          ]

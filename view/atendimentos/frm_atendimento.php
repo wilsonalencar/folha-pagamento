@@ -104,7 +104,7 @@
                         </div>
                       </div>
 
-                      <div class="row">
+                      <div class="row" id="div_funcionario">
                         <div class="col s6">
                           <label for="funcionario">Funcionário</label>
                           <input type="text" id="funcionario" name="funcionario" maxlength="255" readonly="" value="<?php  echo $value['nome_funcionario']; ?>">
@@ -113,28 +113,27 @@
                       </div>
 
                       <div class="row">                        
-                        <div class="">
+                        <div class="col s5">
+                          <div class="">
+                            <label for="documentos">Documentos</label><br />
                             <?php 
-                              if (!empty($solicitacao->id)) { 
+                              if (!empty($value['id'])) { 
 
-                                 $pasta = app::path.'files/arquivo_solicitacao';
-                                 if (is_dir($pasta)) {
-                                    $diretorio = dir($pasta);
-                                    while($arquivo = $diretorio -> read()){
-                                       if ($solicitacao->id == preg_replace("/[^0-9]/", "", $arquivo)) {
-                                          echo "<a href='".app::dominio.'files/arquivo_solicitacao/'.$arquivo."' target='_blank'>Visualizar Documento </a>";
-                                          echo "<input type='hidden' name='file' id='file' value='".$pasta.'/'.$arquivo."'>";
-                                          echo "<input type='hidden' name='excluir_anexo' id='excluir_anexo' value='0'>";
-                                          echo " -- <a href='#' onclick='excluir_anexo();'>Excluir </a>";
-                                       }
+                                $pasta = app::path.'files/arquivo_solicitacao/'.$value['id'];
+                                if (is_dir($pasta)) {
+                                  $diretorio = dir($pasta);
+
+                                  while($arquivo =  $diretorio -> read()){
+                                    if ($arquivo != "." && $arquivo != "..") {
+                                      echo "<a href='".app::dominio.'files/arquivo_solicitacao/'.$value['id'].'/'.$arquivo."' target='_blank'>".$arquivo."</a><br />";
+                                      /*echo "<a href='".app::dominio.'files/arquivo_solicitacao/'.$value['id'].'/'.$arquivo."' target='_blank'>Visualizar Documento </a><br />";
+                                      echo "<input type='hidden' name='file' id='file' value='".$pasta.'/'.$arquivo."'>";*/
                                     }
-                                 }
+                                  }
+                                }
                               } 
                             ?><br>
-                        </div>
-                        <div class="col s5">
-                            <label for="documentos">Documentos</label>
-                            <input type="file" id="documentos[]" name="documentos[]" multiple="multiple" disabled=""><br/>
+                          </div>
                         </div>
                       </div>
 
@@ -152,17 +151,23 @@
                         </div>
 
                         <div class="col s3"></div>
-
+                        <?php if (!empty($value['data_fim_atend'])) { ?>
                         <div class="col s2">
                           <label for="data_fim_atend">Data Conclusão</label>
-                          <input id="data_fim_atend" type="date" name="data_fim_atend" maxlength="255" name="" value="">
+                          <input id="data_fim" type="text" readonly="" maxlength="255" value="<?php echo $value['data_fim_atend']; ?>">
+                        </div>
+                        <?php } ?>
+
+                        <div class="col s2" id="div_data">
+                          <label for="data_fim_atend">Data Conclusão</label>
+                          <input id="data_fim_atend" type="date" name="data_fim_atend" maxlength="255" value="">
                         </div>
                       </div>
 
                       <div class="row">
                         <div class="col s10">
                         <label for="descricao_atendimento">Atendimento</label>
-                          <textarea name="descricao_atendimento" id="descricao_atendimento" class="validate" style="height:150px;" value="<?php echo $solicitacao->descricao_atendimento; ?>"></textarea>
+                          <textarea name="descricao_atendimento" id="descricao_atendimento" class="validate" style="height:150px;"><?php echo $value['descricao_atendimento']; ?></textarea>
                         </div>
                       </div>
                       <div class="row">
@@ -170,7 +175,7 @@
                         <label for="status_id">Status</label>
                           <select id="status_id" name="status_id" class="form-control input-sm">
                             <option value="" disabled selected="">Status</option>
-                            <?php $solicitacao->montaSelectStatusSolicitacao(); ?>
+                            <?php $solicitacao->montaSelectStatusSolicitacao($value['status_id']); ?>
                           </select>
                         </div>
                       </div>
@@ -211,5 +216,17 @@
 <script type="text/javascript">
   
   $(':radio:not(:checked)').attr('disabled', true);
+
+  window.onload = function(e){ 
+    if (document.getElementById("tipo_g").checked) {
+      var div = document.getElementById("div_funcionario");
+      div.style.display = "none";
+    }; 
+
+    if (document.getElementById("data_fim").value) {
+      var div = document.getElementById("div_data");
+      div.style.display = "none";
+    };
+  }
 
 </script>

@@ -22,7 +22,7 @@ function getDataAtendimento(id)
         dataType: 'JSON',
         data:
         {
-            'action':2,
+            'action':5,
             'id':id
         },
         success: function(d)
@@ -46,7 +46,8 @@ $( document ).ready(function() {
     var status = document.getElementById("status_id").value;
     var data_fim = document.getElementById("data_fim_atend").value;
 
-    if ($("#data_fim_atend").val() == '') {
+
+    if (status == 3 && $("#data_fim_atend").val() == '') {
         alert('Informar a data de conclusão');
         $("#data_fim_atend").focus();
         return false;

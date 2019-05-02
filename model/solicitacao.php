@@ -61,7 +61,7 @@ class solicitacao extends app
 	}
 
 	private function check(){
-		
+
 		if (empty($this->evento_id)) {
 			$this->msg = "Favor informar o Evento.";
 			return false;
@@ -77,7 +77,7 @@ class solicitacao extends app
 			return false;
 		}
 
-		if (empty($this->funcionario_id)) {
+		if ($this->tipo == 'F' && empty($this->funcionario_id)) {
 			$this->msg = "Favor informar um funcionário.";
 			return false;	
 		}
@@ -91,7 +91,7 @@ class solicitacao extends app
 
 	private function checkAtendimento(){
 		
-		if (empty($this->data_fim_atend)) {
+		if ($this->status_id == 3 && empty($this->data_fim_atend)) {
 			$this->msg = "Favor informar a Data de Conclusão.";
 			return false;
 		}
@@ -207,6 +207,10 @@ class solicitacao extends app
 	{	
 		$conn = $this->getDB->mysqli_connection;
 
+		if (empty($this->data_fim_atend)) {
+			$this->data_fim_atend = date('Y-m-d');
+		}
+
 		$conn->autocommit(FALSE);
 
 		$query = sprintf(" UPDATE solicitacao SET status_id = %d, id_usuarioatendente = %d, data_inicio_atend = '%s', data_fim_atend = '%s', data_encerramento = '%s', aceite_encerramento = '%s', descricao_atendimento = '%s' WHERE id = %d", 
@@ -226,24 +230,59 @@ class solicitacao extends app
 	public function get($id)
 	{	
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT A.id, B.razao_social as nome_empresa, C.nome as usuario_solicitante, A.data_solicitacao, A.evento_id, A.tipo, A.descricao_solicitacao, D.funcionario_id, E.descricao as desc_evento, F.nome as nome_funcionario FROM solicitacao A INNER JOIN empresa B ON A.empresa_id = B.id INNER JOIN usuarios C ON A.id_usuariosolicitante = C.usuarioid INNER JOIN solicitacaofuncionario D ON A.id = D.solicitacao_id INNER JOIN eventos E ON A.evento_id = E.id INNER JOIN funcionarios F ON D.funcionario_id = F.id WHERE A.id = %d", $id);
+		$query = sprintf("SELECT A.id, B.razao_social as nome_empresa, C.nome as usuario_solicitante, A.data_solicitacao, A.evento_id, A.status_id , A.tipo, A.descricao_solicitacao, A.data_fim_atend, A.descricao_atendimento, D.funcionario_id, E.descricao as desc_evento, F.nome as nome_funcionario FROM solicitacao A INNER JOIN empresa B ON A.empresa_id = B.id INNER JOIN usuarios C ON A.id_usuariosolicitante = C.usuarioid INNER JOIN solicitacaofuncionario D ON A.id = D.solicitacao_id INNER JOIN eventos E ON A.evento_id = E.id INNER JOIN funcionarios F ON D.funcionario_id = F.id WHERE A.id = %d", $id);
 
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento do funcionário";	
+			$this->msg = "Ocorreu um erro no carregamento da solicitação";	
 			return false;	
 		}
 
 		$row = $result->fetch_array(MYSQLI_ASSOC);
-		$row['nome_empresa'] = utf8_decode($row['nome_empresa']);
-		$row['usuario_solicitante'] = utf8_decode($row['usuario_solicitante']);
-		$row['descricao_solicitacao'] = utf8_decode($row['descricao_solicitacao']);
-		$row['desc_evento'] = utf8_decode($row['desc_evento']);
-		$row['nome_funcionario'] = utf8_decode($row['nome_funcionario']);
-		$timestamp = strtotime($row['data_solicitacao']);
-		$row['data_solicitacao'] = date("d/m/Y", $timestamp);
-		$this->array = $row;
-		$this->msg = 'Registro carregado com sucesso';
-		return true;
+
+		if (empty($row)) {
+			$query_geral = sprintf("SELECT A.id, B.razao_social as nome_empresa, C.nome as usuario_solicitante, A.data_solicitacao, A.evento_id, A.status_id , A.tipo, A.descricao_solicitacao, A.data_fim_atend, A.descricao_atendimento, E.descricao as desc_evento FROM solicitacao A INNER JOIN empresa B ON A.empresa_id = B.id INNER JOIN usuarios C ON A.id_usuariosolicitante = C.usuarioid INNER JOIN solicitacaofuncionario D ON A.id = D.solicitacao_id INNER JOIN eventos E ON A.evento_id = E.id WHERE A.id = %d", $id);
+
+				if (!$result = $conn->query($query_geral)) {
+					$this->msg = "Ocorreu um erro no carregamento da solicitação";	
+					return false;	
+				}
+
+				$row_geral = $result->fetch_array(MYSQLI_ASSOC);
+
+				$row_geral['nome_empresa'] = utf8_decode($row_geral['nome_empresa']);
+				$row_geral['usuario_solicitante'] = utf8_decode($row_geral['usuario_solicitante']);
+				$row_geral['descricao_solicitacao'] = utf8_decode($row_geral['descricao_solicitacao']);
+				$row_geral['desc_evento'] = utf8_decode($row_geral['desc_evento']);
+				$timestamp = strtotime($row_geral['data_solicitacao']);
+				$row_geral['data_solicitacao'] = date("d/m/Y", $timestamp);
+
+				if (!empty($row_geral['data_fim_atend'])) {
+					$date_atend = strtotime($row_geral['data_fim_atend']);
+					$row_geral['data_fim_atend'] = date("d/m/Y", $date_atend);
+				}
+
+				$this->array = $row_geral;
+				$this->msg = 'Registro carregado com sucesso';
+				return true;
+		}else {
+
+			$row['nome_empresa'] = utf8_decode($row['nome_empresa']);
+			$row['usuario_solicitante'] = utf8_decode($row['usuario_solicitante']);
+			$row['descricao_solicitacao'] = utf8_decode($row['descricao_solicitacao']);
+			$row['desc_evento'] = utf8_decode($row['desc_evento']);
+			$row['nome_funcionario'] = utf8_decode($row['nome_funcionario']);
+			$timestamp = strtotime($row['data_solicitacao']);
+			$row['data_solicitacao'] = date("d/m/Y", $timestamp);
+
+			if (!empty($row['data_fim_atend'])) {
+				$date_atend = strtotime($row['data_fim_atend']);
+				$row['data_fim_atend'] = date("d/m/Y", $date_atend);
+			}
+
+			$this->array = $row;
+			$this->msg = 'Registro carregado com sucesso';
+			return true;
+		}
 	}
 
 	public function getAtendimento($id)
@@ -252,35 +291,72 @@ class solicitacao extends app
 		$query = sprintf("SELECT A.id, B.razao_social as nome_empresa, C.nome as usuario_solicitante, A.data_solicitacao, A.evento_id, A.tipo, A.descricao_solicitacao, A.data_fim_atend, A.data_inicio_atend, A.descricao_atendimento, A.status_id, A.aceite_encerramento, D.funcionario_id, E.descricao as desc_evento, F.nome as nome_funcionario FROM solicitacao A INNER JOIN empresa B ON A.empresa_id = B.id INNER JOIN usuarios C ON A.id_usuariosolicitante = C.usuarioid INNER JOIN solicitacaofuncionario D ON A.id = D.solicitacao_id INNER JOIN eventos E ON A.evento_id = E.id INNER JOIN funcionarios F ON D.funcionario_id = F.id WHERE A.id = %d", $id);
 
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento do funcionário";	
+			$this->msg = "Ocorreu um erro no carregamento do atendimento";	
 			return false;	
 		}
 
 		$row = $result->fetch_array(MYSQLI_ASSOC);
-		$row['nome_empresa'] = utf8_decode($row['nome_empresa']);
-		$row['usuario_solicitante'] = utf8_decode($row['usuario_solicitante']);
-		$row['descricao_solicitacao'] = utf8_decode($row['descricao_solicitacao']);
-		$row['desc_evento'] = utf8_decode($row['desc_evento']);
-		$row['nome_funcionario'] = utf8_decode($row['nome_funcionario']);
 
-		if ($row['data_fim_atend']) {
-			$data_fim_atend_formated = strtotime($row['data_fim_atend']);
-			$row['data_fim_atend'] = date("d/m/Y", $data_fim_atend_formated);
+		if (empty($row)) {
+			$query_geral = sprintf("SELECT A.id, B.razao_social as nome_empresa, C.nome as usuario_solicitante, A.data_solicitacao, A.evento_id, A.tipo, A.descricao_solicitacao, A.data_fim_atend, A.data_inicio_atend, A.descricao_atendimento, A.status_id, A.aceite_encerramento, D.funcionario_id, E.descricao as desc_evento FROM solicitacao A INNER JOIN empresa B ON A.empresa_id = B.id INNER JOIN usuarios C ON A.id_usuariosolicitante = C.usuarioid INNER JOIN solicitacaofuncionario D ON A.id = D.solicitacao_id INNER JOIN eventos E ON A.evento_id = E.id WHERE A.id = %d", $id);
+
+			if (!$result = $conn->query($query_geral)) {
+					$this->msg = "Ocorreu um erro no carregamento da solicitação";	
+					return false;	
+				}
+
+			$row_geral = $result->fetch_array(MYSQLI_ASSOC);
+
+			$row_geral['nome_empresa'] = utf8_decode($row_geral['nome_empresa']);
+			$row_geral['usuario_solicitante'] = utf8_decode($row_geral['usuario_solicitante']);
+			$row_geral['descricao_solicitacao'] = utf8_decode($row_geral['descricao_solicitacao']);
+			$row_geral['desc_evento'] = utf8_decode($row_geral['desc_evento']);
+
+			if ($row_geral['data_fim_atend']) {
+				$data_fim_atend_formated = strtotime($row_geral['data_fim_atend']);
+				$row_geral['data_fim_atend'] = date("d/m/Y", $data_fim_atend_formated);
+			}
+
+			if ($row_geral['data_inicio_atend']) {
+				$data_inicio_atend_formated = strtotime($row_geral['data_inicio_atend']);
+				$row_geral['data_inicio_atend'] = date("d/m/Y", $data_inicio_atend_formated);
+			}
+
+			if ($row_geral['data_solicitacao']) {
+				$timestamp = strtotime($row_geral['data_solicitacao']);
+				$row_geral['data_solicitacao'] = date("d/m/Y", $timestamp);
+			}
+
+			$this->array = $row_geral;
+			$this->msg = 'Registro carregado com sucesso';
+			return true;
+		}else {
+
+			$row['nome_empresa'] = utf8_decode($row['nome_empresa']);
+			$row['usuario_solicitante'] = utf8_decode($row['usuario_solicitante']);
+			$row['descricao_solicitacao'] = utf8_decode($row['descricao_solicitacao']);
+			$row['desc_evento'] = utf8_decode($row['desc_evento']);
+			$row['nome_funcionario'] = utf8_decode($row['nome_funcionario']);
+
+			if ($row['data_fim_atend']) {
+				$data_fim_atend_formated = strtotime($row['data_fim_atend']);
+				$row['data_fim_atend'] = date("d/m/Y", $data_fim_atend_formated);
+			}
+
+			if ($row['data_inicio_atend']) {
+				$data_inicio_atend_formated = strtotime($row['data_inicio_atend']);
+				$row['data_inicio_atend'] = date("d/m/Y", $data_inicio_atend_formated);
+			}
+
+			if ($row['data_solicitacao']) {
+				$timestamp = strtotime($row['data_solicitacao']);
+				$row['data_solicitacao'] = date("d/m/Y", $timestamp);
+			}
+
+			$this->array = $row;
+			$this->msg = 'Registro carregado com sucesso';
+			return true;
 		}
-
-		if ($row['data_inicio_atend']) {
-			$data_inicio_atend_formated = strtotime($row['data_inicio_atend']);
-			$row['data_inicio_atend'] = date("d/m/Y", $data_inicio_atend_formated);
-		}
-
-		if ($row['data_solicitacao']) {
-			$timestamp = strtotime($row['data_solicitacao']);
-			$row['data_solicitacao'] = date("d/m/Y", $timestamp);
-		}
-
-		$this->array = $row;
-		$this->msg = 'Registro carregado com sucesso';
-		return true;
 	}
 
 	public function lista()
@@ -302,7 +378,7 @@ class solicitacao extends app
 	public function listaAtendimento($array)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = "SELECT A.id, A.data_solicitacao, A.id_usuariosolicitante, A.evento_id, B.nome as nome_usuario, C.descricao as evento, A.descricao_solicitacao, A.status_id, D.descricao as status, F.nome as nome_funcionario FROM solicitacao A INNER JOIN usuarios B ON A.id_usuariosolicitante = B.usuarioid INNER JOIN eventos C ON A.evento_id = C.id INNER JOIN statussolicitacao D ON A.status_id = D.id INNER JOIN solicitacaofuncionario E ON A.id = E.solicitacao_id INNER JOIN funcionarios F ON E.funcionario_id = F.id WHERE A.empresa_id = ".$_SESSION['folha']['id_empresa'];
+		$query = "SELECT A.id, A.data_solicitacao, A.id_usuariosolicitante, A.evento_id, B.nome as nome_usuario, C.descricao as evento, A.descricao_solicitacao, A.status_id, D.descricao as status FROM solicitacao A INNER JOIN usuarios B ON A.id_usuariosolicitante = B.usuarioid INNER JOIN eventos C ON A.evento_id = C.id INNER JOIN statussolicitacao D ON A.status_id = D.id INNER JOIN solicitacaofuncionario E ON A.id = E.solicitacao_id WHERE A.empresa_id = ".$_SESSION['folha']['id_empresa'];
 
 		if (!empty($array['clear'])) {
 			$_SESSION['folha']['filtro']['status_id'] = '';

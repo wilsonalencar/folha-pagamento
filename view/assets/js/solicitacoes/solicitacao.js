@@ -32,10 +32,10 @@ function getDataSolicitacao(id)
                return false;
             }
             $("#id").val(d.data.id);
-            $("#empresa_id").val(d.data.empresa_id);
-            $("#id_usuariosolicitante").val(d.data.id_usuariosolicitante);
             $("#evento_id").val(d.data.evento_id);
-            $("#descricao_solicitacao").val(d.data.descricao_solicitacao);
+            $(".tipo_f:checked").val();
+            $(".tipo_g:checked").val();
+            $('textarea#descricao_solicitacao').val();
             $("#funcionario_id").val(d.data.funcionario_id);
         }
     });
@@ -60,7 +60,7 @@ $( document ).ready(function() {
         return false;
     }
 
-    if (funcionario == '') {
+    if (document.getElementById("tipo_f").checked && funcionario == '') {
         alert('Informar um funcionário');
         $("#funcionario_id").focus();
         return false;

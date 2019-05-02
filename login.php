@@ -2,6 +2,7 @@
 require_once('model/usuario.php');
 require_once('model/empresa.php');
 
+
 $empresa = new empresa;
 $usuario = new usuario;
 $usuario->email = $usuario->getRequest('email', '');

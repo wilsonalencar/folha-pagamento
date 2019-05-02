@@ -45,6 +45,7 @@ class empresa extends app
 		if($result = $conn->query($query))
 		{
 			$row = $result->fetch_array(MYSQLI_ASSOC);
+			$row['razao_social'] = utf8_decode($row['razao_social']);
 			return $row;
 		}
 	}
