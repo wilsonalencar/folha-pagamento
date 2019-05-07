@@ -26,10 +26,16 @@ class usuario extends app
 		if (!empty($row = $result->fetch_array(MYSQLI_ASSOC))){
 
 			$_SESSION['folha']['usuarioid'] 					= $row['usuarioid'];
- 			$_SESSION['folha']['nome_usuario'] 	   			= $row['nome'];
+ 			$_SESSION['folha']['nome_usuario'] 	   				= $row['nome'];
  			$_SESSION['folha']['email_usuario'] 				= $row['email'];
- 			$_SESSION['folha']['id_perfilusuario'] 			= $row['id_perfilusuario'];
- 			$_SESSION['folha']['reset_senha'] 				= $row['reset_senha'];
+ 			$_SESSION['folha']['id_perfilusuario'] 				= $row['id_perfilusuario'];
+ 			$_SESSION['folha']['reset_senha'] 					= $row['reset_senha'];
+ 			$_SESSION['folha']['id_empresa'] 					= '';
+ 			$_SESSION['folha']['filtro']['status_id'] 			= '';
+			$_SESSION['folha']['filtro']['id'] 					= '';
+		    $_SESSION['folha']['filtro']['solicitante'] 		= '';
+			$_SESSION['folha']['filtro']['funcionario'] 		= '';
+			$_SESSION['folha']['filtro']['data_busca_periodo'] 	= '';
  			
  			if (!empty($row['usuarioid'])) {
  				$_SESSION['folha']['usuarioid']     = $row['usuarioid'];

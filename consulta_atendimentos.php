@@ -61,10 +61,7 @@
                        ?>
 
                       <div class="table-default">
-
-
-
-                          <form action="atendimentos.php" method="post" id="atendimento_edit">
+                          <form action="/folha-pagamento/atendimentos.php" method="post" id="atendimento_edit">
                               <table class="table display" id="dataTables-example">
                                   <thead>
                                       <tr class="top-table">

@@ -2,8 +2,8 @@
 
 class config extends dba
 {
-const  dominio = 'http://dev.platform/folha-pagamento/';
-const  path    = '/var/www/html/plataforma/folha-pagamento/';
+const  dominio = 'http://homo-bravoplataforma.bravobpo.com.br/folha-pagamento/';
+const  path    = 'C:/wamp/www/plataforma/folha-pagamento/';
 }
 
 class dba 
@@ -11,7 +11,7 @@ class dba
 	public $mysqli_connection;
 
 	public function __construct() {
-		$mysqli_connection = new MySQLi('127.0.0.1', 'root', 'Everty_14', 'folhapagto');
+		$mysqli_connection = new MySQLi('127.0.0.1', 'root', 'Br4v0@', 'folhapagto');
 		if($mysqli_connection->connect_error){
 		  echo "Desconectado! Erro: " . $mysqli_connection->connect_error;
 		}

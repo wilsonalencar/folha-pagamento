@@ -24,6 +24,7 @@
     
 <?php 
     if (isset($_GET['id_empresa']) && !empty($_GET['id_empresa'])) {
+        $_SESSION['folha']['id_empresa'] = $_GET['id_empresa'];
         header('LOCATION:/folha-pagamento/');
     }
     $espaco = 0;
@@ -47,7 +48,7 @@
                             </div>        
                             <?php  if ( (isset($_GET['id_empresa']) && !empty($_GET['id_empresa'])) || (isset($_SESSION['folha']['id_empresa']) && !empty($_SESSION['folha']['id_empresa']))  ) { $espaco = 1; 
                                 $id_empresa = $_SESSION['folha']['id_empresa'];
-                                if ($_SESSION['folha']['id_empresa'] != $_GET['id_empresa']) {
+                                if (isset($_GET['id_empresa']) && isset($_SESSION['folha']['id_empresa']) && $_SESSION['folha']['id_empresa'] != $_GET['id_empresa']) {
                                     $id_empresa = $_GET['id_empresa'];
                                 }
                                 ?>

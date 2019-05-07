@@ -76,10 +76,10 @@ class anexo extends app
 		    if (!empty($this->dir)) {
 				$dir = app::path.$this->dir.$this->path.'/'.$this->name;
 
-				if (!file_exists($dir)) {
+				if (!is_dir($dir)) {
 					mkdir($dir, 0777, true);	
 				}
-
+				
 				$upload = move_uploaded_file($file['tmp_name'], $dir .'/'. $name);
 		    	
 		    	if (!$upload) {
