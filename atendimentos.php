@@ -8,7 +8,6 @@ define('DEL', 3);
 define('FILTRA', 4);
 define('AJAX', 5);
 
-
 $solicitacao 				= new solicitacao;
 $usuario 					= new usuario;
 

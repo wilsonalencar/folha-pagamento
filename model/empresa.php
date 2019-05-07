@@ -93,6 +93,23 @@ class empresa extends app
 			return false;	
 		}
 
+		$queryDelEve = sprintf(" DELETE FROM eventosempresa WHERE empresa_id = %d", $this->id);
+		if (!$conn->query($queryDelEve)) {
+			$this->msg = "Ocorreu um erro no sistema, contate o administrador do sistema!";
+			return false;	
+		}
+
+		if (is_array($this->id_eventos)) {
+			foreach ($this->id_eventos as $l => $evento) {
+
+				$queryEve = "INSERT INTO eventosempresa (empresa_id, evento_id) VALUES (".$this->id.",".$evento.")";
+				if (!$conn->query($queryEve)) {
+					$this->msg = "Ocorreu um erro no sistema, contate o administrador do sistema!";
+					return false;	
+				}
+			}
+		}
+
 		$this->msg = "Registros atualizados com sucesso!";
 		return true;
 	}
@@ -182,6 +199,13 @@ class empresa extends app
 			$this->msg = "Não foi possível excluir a empresa.";	
 			return false;	
 		}
+
+		$queryDelEve = sprintf(" DELETE FROM eventosempresa WHERE empresa_id = %d", $this->id);
+		if (!$conn->query($queryDelEve)) {
+			$this->msg = "Ocorreu um erro no sistema, contate o administrador do sistema!";
+			return false;	
+		}
+
 		$this->msg = 'Registro excluido com sucesso';
 		return true;	
 	}

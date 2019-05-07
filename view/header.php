@@ -41,7 +41,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <div class="navbar-brand">
-                        <a class="waves-effect waves-dark" href="/login.php" >
+                        <a class="waves-effect waves-dark" href="login.php" >
                             <div>
                                 <img src="<?php echo app::dominio; ?>view/assets/img/bravo-icon.png">
                             </div>        

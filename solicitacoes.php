@@ -9,7 +9,6 @@ define('SAVE', 1);
 define('GET', 2);
 define('DEL', 3);
 
-
 $empresa 					= new empresa;
 $usuario 					= new usuario;
 $funcionario 				= new funcionario;

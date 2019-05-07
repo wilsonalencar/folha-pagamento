@@ -207,18 +207,27 @@ class solicitacao extends app
 	{	
 		$conn = $this->getDB->mysqli_connection;
 
-		if (empty($this->data_fim_atend)) {
-			$this->data_fim_atend = date('Y-m-d');
-		}
-
 		$conn->autocommit(FALSE);
 
-		$query = sprintf(" UPDATE solicitacao SET status_id = %d, id_usuarioatendente = %d, data_inicio_atend = '%s', data_fim_atend = '%s', data_encerramento = '%s', aceite_encerramento = '%s', descricao_atendimento = '%s' WHERE id = %d", 
-			$this->status_id, $this->id_usuarioatendente, $this->data_inicio_atend, $this->data_fim_atend, $this->data_fim_atend, utf8_encode($this->aceite_encerramento), utf8_encode($this->descricao_atendimento), $this->id);
+		if (!empty($this->data_fim_atend)) {
 
-		if (!$conn->query($query)) {
-			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
-			return false;	
+			$query = sprintf(" UPDATE solicitacao SET status_id = %d, id_usuarioatendente = %d, data_inicio_atend = '%s', data_fim_atend = '%s', data_encerramento = '%s', aceite_encerramento = '%s', descricao_atendimento = '%s' WHERE id = %d", 
+				$this->status_id, $this->id_usuarioatendente, $this->data_inicio_atend, $this->data_fim_atend, $this->data_fim_atend, utf8_encode($this->aceite_encerramento), utf8_encode($this->descricao_atendimento), $this->id);
+
+			if (!$conn->query($query)) {
+				$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+				return false;	
+			}
+
+		}else{
+
+			$query = sprintf(" UPDATE solicitacao SET status_id = %d, id_usuarioatendente = %d, data_inicio_atend = '%s', descricao_atendimento = '%s' WHERE id = %d", 
+				$this->status_id, $this->id_usuarioatendente, $this->data_inicio_atend, utf8_encode($this->descricao_atendimento), $this->id);
+
+			if (!$conn->query($query)) {
+				$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+				return false;	
+			}
 		}
 
 		$conn->commit();
@@ -230,7 +239,7 @@ class solicitacao extends app
 	public function get($id)
 	{	
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT A.id, B.razao_social as nome_empresa, C.nome as usuario_solicitante, A.data_solicitacao, A.evento_id, A.status_id , A.tipo, A.descricao_solicitacao, A.data_fim_atend, A.descricao_atendimento, D.funcionario_id, E.descricao as desc_evento, F.nome as nome_funcionario FROM solicitacao A INNER JOIN empresa B ON A.empresa_id = B.id INNER JOIN usuarios C ON A.id_usuariosolicitante = C.usuarioid INNER JOIN solicitacaofuncionario D ON A.id = D.solicitacao_id INNER JOIN eventos E ON A.evento_id = E.id INNER JOIN funcionarios F ON D.funcionario_id = F.id WHERE A.id = %d", $id);
+		$query = sprintf("SELECT A.id, B.razao_social as nome_empresa, C.nome as usuario_solicitante, A.data_solicitacao, A.data_inicio_atend, A.evento_id, A.status_id , A.tipo, A.descricao_solicitacao, A.data_fim_atend, A.descricao_atendimento, D.funcionario_id, E.descricao as desc_evento, F.nome as nome_funcionario FROM solicitacao A INNER JOIN empresa B ON A.empresa_id = B.id INNER JOIN usuarios C ON A.id_usuariosolicitante = C.usuarioid INNER JOIN solicitacaofuncionario D ON A.id = D.solicitacao_id INNER JOIN eventos E ON A.evento_id = E.id INNER JOIN funcionarios F ON D.funcionario_id = F.id WHERE A.id = %d", $id);
 
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento da solicitação";	
@@ -240,7 +249,7 @@ class solicitacao extends app
 		$row = $result->fetch_array(MYSQLI_ASSOC);
 
 		if (empty($row)) {
-			$query_geral = sprintf("SELECT A.id, B.razao_social as nome_empresa, C.nome as usuario_solicitante, A.data_solicitacao, A.evento_id, A.status_id , A.tipo, A.descricao_solicitacao, A.data_fim_atend, A.descricao_atendimento, E.descricao as desc_evento FROM solicitacao A INNER JOIN empresa B ON A.empresa_id = B.id INNER JOIN usuarios C ON A.id_usuariosolicitante = C.usuarioid INNER JOIN solicitacaofuncionario D ON A.id = D.solicitacao_id INNER JOIN eventos E ON A.evento_id = E.id WHERE A.id = %d", $id);
+			$query_geral = sprintf("SELECT A.id, B.razao_social as nome_empresa, C.nome as usuario_solicitante, A.data_solicitacao, A.data_inicio_atend, A.evento_id, A.status_id , A.tipo, A.descricao_solicitacao, A.data_fim_atend, A.descricao_atendimento, E.descricao as desc_evento FROM solicitacao A INNER JOIN empresa B ON A.empresa_id = B.id INNER JOIN usuarios C ON A.id_usuariosolicitante = C.usuarioid INNER JOIN solicitacaofuncionario D ON A.id = D.solicitacao_id INNER JOIN eventos E ON A.evento_id = E.id WHERE A.id = %d", $id);
 
 				if (!$result = $conn->query($query_geral)) {
 					$this->msg = "Ocorreu um erro no carregamento da solicitação";	
@@ -252,13 +261,19 @@ class solicitacao extends app
 				$row_geral['nome_empresa'] = utf8_decode($row_geral['nome_empresa']);
 				$row_geral['usuario_solicitante'] = utf8_decode($row_geral['usuario_solicitante']);
 				$row_geral['descricao_solicitacao'] = utf8_decode($row_geral['descricao_solicitacao']);
+				$row_geral['descricao_atendimento'] = utf8_decode($row_geral['descricao_atendimento']);
 				$row_geral['desc_evento'] = utf8_decode($row_geral['desc_evento']);
 				$timestamp = strtotime($row_geral['data_solicitacao']);
-				$row_geral['data_solicitacao'] = date("d/m/Y", $timestamp);
+				$row_geral['data_solicitacao'] = date("d/m/Y - H:i", $timestamp);
+
+				if (!empty($row_geral['data_inicio_atend'])) {
+					$timestamp1 = strtotime($row_geral['data_inicio_atend']);
+					$row_geral['data_inicio_atend'] = date("d/m/Y - H:i", $timestamp1);
+				}
 
 				if (!empty($row_geral['data_fim_atend'])) {
 					$date_atend = strtotime($row_geral['data_fim_atend']);
-					$row_geral['data_fim_atend'] = date("d/m/Y", $date_atend);
+					$row_geral['data_fim_atend'] = date("d/m/Y - H:i", $date_atend);
 				}
 
 				$this->array = $row_geral;
@@ -269,14 +284,20 @@ class solicitacao extends app
 			$row['nome_empresa'] = utf8_decode($row['nome_empresa']);
 			$row['usuario_solicitante'] = utf8_decode($row['usuario_solicitante']);
 			$row['descricao_solicitacao'] = utf8_decode($row['descricao_solicitacao']);
+			$row['descricao_atendimento'] = utf8_decode($row['descricao_atendimento']);
 			$row['desc_evento'] = utf8_decode($row['desc_evento']);
 			$row['nome_funcionario'] = utf8_decode($row['nome_funcionario']);
 			$timestamp = strtotime($row['data_solicitacao']);
-			$row['data_solicitacao'] = date("d/m/Y", $timestamp);
+			$row['data_solicitacao'] = date("d/m/Y - H:i", $timestamp);
+
+			if (!empty($row['data_inicio_atend'])) {
+				$timestamp1 = strtotime($row['data_inicio_atend']);
+				$row['data_inicio_atend'] = date("d/m/Y - H:i", $timestamp1);
+			}
 
 			if (!empty($row['data_fim_atend'])) {
 				$date_atend = strtotime($row['data_fim_atend']);
-				$row['data_fim_atend'] = date("d/m/Y", $date_atend);
+				$row['data_fim_atend'] = date("d/m/Y - H:i", $date_atend);
 			}
 
 			$this->array = $row;
@@ -314,17 +335,17 @@ class solicitacao extends app
 
 			if ($row_geral['data_fim_atend']) {
 				$data_fim_atend_formated = strtotime($row_geral['data_fim_atend']);
-				$row_geral['data_fim_atend'] = date("d/m/Y", $data_fim_atend_formated);
+				$row_geral['data_fim_atend'] = date("d/m/Y - H:i", $data_fim_atend_formated);
 			}
 
 			if ($row_geral['data_inicio_atend']) {
 				$data_inicio_atend_formated = strtotime($row_geral['data_inicio_atend']);
-				$row_geral['data_inicio_atend'] = date("d/m/Y", $data_inicio_atend_formated);
+				$row_geral['data_inicio_atend'] = date("d/m/Y - H:i", $data_inicio_atend_formated);
 			}
 
 			if ($row_geral['data_solicitacao']) {
 				$timestamp = strtotime($row_geral['data_solicitacao']);
-				$row_geral['data_solicitacao'] = date("d/m/Y", $timestamp);
+				$row_geral['data_solicitacao'] = date("d/m/Y - H:i", $timestamp);
 			}
 
 			$this->array = $row_geral;
@@ -340,17 +361,17 @@ class solicitacao extends app
 
 			if ($row['data_fim_atend']) {
 				$data_fim_atend_formated = strtotime($row['data_fim_atend']);
-				$row['data_fim_atend'] = date("d/m/Y", $data_fim_atend_formated);
+				$row['data_fim_atend'] = date("d/m/Y - H:i", $data_fim_atend_formated);
 			}
 
 			if ($row['data_inicio_atend']) {
 				$data_inicio_atend_formated = strtotime($row['data_inicio_atend']);
-				$row['data_inicio_atend'] = date("d/m/Y", $data_inicio_atend_formated);
+				$row['data_inicio_atend'] = date("d/m/Y - H:i", $data_inicio_atend_formated);
 			}
 
 			if ($row['data_solicitacao']) {
 				$timestamp = strtotime($row['data_solicitacao']);
-				$row['data_solicitacao'] = date("d/m/Y", $timestamp);
+				$row['data_solicitacao'] = date("d/m/Y - H:i", $timestamp);
 			}
 
 			$this->array = $row;
@@ -370,7 +391,7 @@ class solicitacao extends app
 		}
 		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 			$timestamp = strtotime($row['data_solicitacao']);
-			$row['data_solicitacao'] = date("d/m/Y", $timestamp);
+			$row['data_solicitacao'] = date("d/m/Y - H:i", $timestamp);
 			$this->array[] = $row;
 		}
 	}
@@ -385,10 +406,11 @@ class solicitacao extends app
 			$_SESSION['folha']['filtro']['id'] = '';
 			$_SESSION['folha']['filtro']['funcionario'] = '';
 			$_SESSION['folha']['filtro']['solicitante'] = '';
-			$_SESSION['folha']['filtro']['data_busca_periodo'] = '';
+			$_SESSION['folha']['filtro']['data_busca_periodo_inicio'] = '';
+			$_SESSION['folha']['filtro']['data_busca_periodo_final'] = '';
 		}
 		
-		if (!empty($array['status_id'])) {
+		if (!empty($array['status_id']) && empty($array['clear'])) {
 			$_SESSION['folha']['filtro']['status_id'] = $array['status_id'];
 		}
 		$status_id = $_SESSION['folha']['filtro']['status_id'];
@@ -397,7 +419,7 @@ class solicitacao extends app
 			$query .= ' AND A.status_id = '.$status_id;
 		}
 
-		if (!empty($array['id'])) {
+		if (!empty($array['id']) && empty($array['clear'])) {
 			$_SESSION['folha']['filtro']['id'] = $array['id'];
 		}
 		$id = $_SESSION['folha']['filtro']['id'];
@@ -406,7 +428,7 @@ class solicitacao extends app
 			$query .= ' AND A.id = '.$id;
 		}
 
-		if (!empty($array['solicitante'])) {
+		if (!empty($array['solicitante']) && empty($array['clear'])) {
 			$_SESSION['folha']['filtro']['solicitante'] = $array['solicitante'];
 		}
 		$solicitante = $_SESSION['folha']['filtro']['solicitante'];
@@ -415,7 +437,7 @@ class solicitacao extends app
 			$query .= ' AND A.id_usuariosolicitante = '.$solicitante;
 		}
 
-		if (!empty($array['funcionario'])) {
+		if (!empty($array['funcionario']) && empty($array['clear'])) {
 			$_SESSION['folha']['filtro']['funcionario'] = $array['funcionario'];
 		}
 		$funcionario = $_SESSION['folha']['filtro']['funcionario'];
@@ -424,13 +446,18 @@ class solicitacao extends app
 			$query .= ' AND E.funcionario_id = '.$funcionario;
 		}
 
-		if (!empty($array['data_busca_periodo'])) {
-			$_SESSION['folha']['filtro']['data_busca_periodo'] = $array['data_busca_periodo'];
+		if (!empty($array['data_busca_periodo_inicio']) && empty($array['clear'])) {
+			$_SESSION['folha']['filtro']['data_busca_periodo_inicio'] = $array['data_busca_periodo_inicio'];
 		}
-		$data_busca_periodo = $_SESSION['folha']['filtro']['data_busca_periodo'];
+		$data_busca_periodo_inicio = $_SESSION['folha']['filtro']['data_busca_periodo_inicio'];
 
-		if (!empty($data_busca_periodo)) {
-			$query .= ' AND DATE_FORMAT(A.data_solicitacao, "%Y-%m-%d") = "'.$data_busca_periodo.'"';
+		if (!empty($array['data_busca_periodo_final']) && empty($array['clear'])) {
+			$_SESSION['folha']['filtro']['data_busca_periodo_final'] = $array['data_busca_periodo_final'];
+		}
+		$data_busca_periodo_final = $_SESSION['folha']['filtro']['data_busca_periodo_final'];
+
+		if (!empty($data_busca_periodo_inicio) && !empty($data_busca_periodo_final)) {
+			$query .= ' AND DATE_FORMAT(A.data_solicitacao, "%Y-%m-%d") BETWEEN "'.$data_busca_periodo_inicio.'" AND "'.$data_busca_periodo_final.'"';
 		}
 
 		if (!$result = $conn->query($query)) {
@@ -439,7 +466,8 @@ class solicitacao extends app
 		}
 		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 			$timestamp = strtotime($row['data_solicitacao']);
-			$row['data_solicitacao'] = date("d/m/Y", $timestamp);
+			$row['data_solicitacao'] = date("d/m/Y - H:i", $timestamp);
+
 			$this->array[] = $row;
 		}
 	}

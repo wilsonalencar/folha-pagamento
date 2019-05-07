@@ -61,6 +61,9 @@
                        ?>
 
                       <div class="table-default">
+
+
+
                           <form action="atendimentos.php" method="post" id="atendimento_edit">
                               <table class="table display" id="dataTables-example">
                                   <thead>
@@ -109,36 +112,41 @@
                             <label for="solicitacao">Solicitação</label>
                               <select id="solicitacao" name="id" class="form-control input-sm">
                                 <option value="">Todos</option>
-                                <?php $solicitacao->montaSelectNumSolicitacao(); ?>
+                                <?php $solicitacao->montaSelectNumSolicitacao($_SESSION['folha']['filtro']['id']); ?>
                               </select>
                             </div>
                             <div class="col s3">
                             <label for="status">Status</label>
                               <select id="status" name="status_id" class="form-control input-sm">
                                 <option value="">Todos</option>
-                                <?php $solicitacao->montaSelectStatusSolicitacao(); ?>
+                                <?php $solicitacao->montaSelectStatusSolicitacao($_SESSION['folha']['filtro']['status_id']); ?>
                               </select>
                             </div>
                             <div class="col s3">
                             <label for="solicitante">Solicitante</label>
                             <select id="solicitante" name="solicitante" class="form-control input-sm">
                               <option value="">Todos</option>
-                              <?php $solicitacao->montaSelectSolicitante(); ?>
+                              <?php $solicitacao->montaSelectSolicitante($_SESSION['folha']['filtro']['solicitante']); ?>
                             </select>
                             </div>
                             <div class="col s3">
                             <label for="funcionario">Funcionário</label>
                             <select id="funcionario" name="funcionario" class="form-control input-sm">
                               <option value="">Todos</option>
-                              <?php $funcionario->montaSelectFuncionarioSolicitacao(); ?>
+                              <?php $funcionario->montaSelectFuncionarioSolicitacao($_SESSION['folha']['filtro']['funcionario']); ?>
                             </select>
                             </div>
                             <div class="col s12">&#8200</div>
                             <div class="col s2">
-                                Período
-                                <input type="date" name="data_busca_periodo" class="validate" value="" maxlength="8">
+                                Período Inicío
+                                <input type="date" name="data_busca_periodo_inicio" class="validate" value="<?php echo $_SESSION['folha']['filtro']['data_busca_periodo_inicio']; ?>" maxlength="8">
                             </div>
-                            <div class="col s8"></div>
+                            <div class="col s1"></div>
+                            <div class="col s2">
+                                Período Final
+                                <input type="date" name="data_busca_periodo_final" class="validate" value="<?php echo $_SESSION['folha']['filtro']['data_busca_periodo_final']; ?>" maxlength="8">
+                            </div>
+                            <div class="col s5"></div>
                             <div class="col s2">
                               <br/>
                               <br/>

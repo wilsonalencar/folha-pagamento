@@ -145,10 +145,19 @@
                       </div>
 
                       <div class="row">
+                        <?php if (!empty($value['data_inicio_atend'])) { ?>
+                        <div class="col s2">
+                          <label for="data">Data Início</label>
+                          <input type="text" id="data" readonly="" name="data_inicio_atend" maxlength="255" value="<?php echo $value['data_inicio_atend']; ?>">
+                        </div>
+                        <?php } ?>
+
+                        <?php if (empty($value['data_inicio_atend'])) { ?>
                         <div class="col s2">
                           <label for="data">Data Início</label>
                           <input type="text" id="data" readonly="" maxlength="255" value="<?php echo date("d/m/Y"); ?>">
                         </div>
+                        <?php } ?>
 
                         <div class="col s3"></div>
                         <?php if (!empty($value['data_fim_atend'])) { ?>
@@ -158,9 +167,9 @@
                         </div>
                         <?php } ?>
 
-                        <div class="col s2" id="div_data">
+                        <div class="col s3" id="div_data">
                           <label for="data_fim_atend">Data Conclusão</label>
-                          <input id="data_fim_atend" type="date" name="data_fim_atend" maxlength="255" value="">
+                          <input id="data_fim_atend" type="datetime-local" name="data_fim_atend" maxlength="255" value="">
                         </div>
                       </div>
 
@@ -184,9 +193,9 @@
                       <div class="input-field">
                       </div>
                         <input type="hidden" id="id" name="id" value="<?php echo $value['id']; ?>">
-                        <input type="hidden" id="data_inicio_atend" name="data_inicio_atend" value="<?php echo date("Y-m-d"); ?>">
-                        <input type="hidden" id="aceite_encerramento" name="aceite_encerramento" value="<?php  echo $usuario_session['nome'];?>">
+                        <input type="hidden" id="data_inicio_atend" name="data_inicio_atend" value="<?php echo date("Y-m-d H:i:s"); ?>">
                         <input type="hidden" id="id_usuarioatendente" name="id_usuarioatendente" value="<?php  echo $usuario_session['usuarioid'];?>">
+                        <input type="hidden" id="aceite_encerramento" name="aceite_encerramento" value="<?php  echo $usuario_session['nome'];?>">
                         <input type="hidden" id="action" name="action" value="1">
                         <div class="input-field col s2">
                             <a href="<?php echo app::dominio; ?>consulta_solicitacao.php"  class="waves-effect waves-light btn">Voltar</a>
