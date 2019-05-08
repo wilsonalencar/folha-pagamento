@@ -134,16 +134,16 @@
                             </select>
                             </div>
                             <div class="col s12">&#8200</div>
-                            <div class="col s2">
+                            <div class="col s3">
                                 Período Inicío
                                 <input type="date" name="data_busca_periodo_inicio" class="validate" value="<?php echo $_SESSION['folha']['filtro']['data_busca_periodo_inicio']; ?>" maxlength="8">
                             </div>
                             <div class="col s1"></div>
-                            <div class="col s2">
+                            <div class="col s3">
                                 Período Final
                                 <input type="date" name="data_busca_periodo_final" class="validate" value="<?php echo $_SESSION['folha']['filtro']['data_busca_periodo_final']; ?>" maxlength="8">
                             </div>
-                            <div class="col s5"></div>
+                            <div class="col s2"></div>
                             <div class="col s2">
                               <br/>
                               <br/>
