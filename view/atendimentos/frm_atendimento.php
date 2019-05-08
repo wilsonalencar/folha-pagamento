@@ -146,14 +146,14 @@
 
                       <div class="row">
                         <?php if (!empty($value['data_inicio_atend'])) { ?>
-                        <div class="col s2">
+                        <div class="col s3">
                           <label for="data">Data Início</label>
                           <input type="text" id="data" readonly="" name="data_inicio_atend" maxlength="255" value="<?php echo $value['data_inicio_atend']; ?>">
                         </div>
                         <?php } ?>
 
                         <?php if (empty($value['data_inicio_atend'])) { ?>
-                        <div class="col s2">
+                        <div class="col s3">
                           <label for="data">Data Início</label>
                           <input type="text" id="data" readonly="" maxlength="255" value="<?php echo date("d/m/Y"); ?>">
                         </div>
@@ -161,13 +161,13 @@
 
                         <div class="col s3"></div>
                         <?php if (!empty($value['data_fim_atend'])) { ?>
-                        <div class="col s2">
+                        <div class="col s3">
                           <label for="data_fim_atend">Data Conclusão</label>
                           <input id="data_fim" type="text" readonly="" maxlength="255" value="<?php echo $value['data_fim_atend']; ?>">
                         </div>
                         <?php } ?>
 
-                        <div class="col s3" id="div_data">
+                        <div class="col s4" id="div_data">
                           <label for="data_fim_atend">Data Conclusão</label>
                           <input id="data_fim_atend" type="datetime-local" name="data_fim_atend" maxlength="255" value="">
                         </div>

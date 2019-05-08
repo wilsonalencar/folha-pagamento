@@ -146,7 +146,7 @@
                       </div>
 
                       <div class="row">
-                        <div class="col s2">
+                        <div class="col s3">
                           <label for="data_inicio_atend">Data Início</label>
                           <?php if ($value['data_inicio_atend']){ ?>
                           <input type="text" id="data_inicio_atend" readonly="" name="data_inicio_atend" maxlength="255" value="<?php echo $value['data_inicio_atend'] ; ?>">
@@ -157,7 +157,7 @@
 
                         <div class="col s3"></div>
 
-                        <div class="col s2">
+                        <div class="col s3">
                           <label for="data_fim_atend">Data Conclusão</label>
                           <input id="data_fim_atend" name="data_fim_atend" type="text" name="data_fim_atend" readonly="" maxlength="255" name="" value="<?php echo $value['data_fim_atend']; ?>">
                         </div>

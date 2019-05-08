@@ -35,7 +35,8 @@ class usuario extends app
 			$_SESSION['folha']['filtro']['id'] 					= '';
 		    $_SESSION['folha']['filtro']['solicitante'] 		= '';
 			$_SESSION['folha']['filtro']['funcionario'] 		= '';
-			$_SESSION['folha']['filtro']['data_busca_periodo'] 	= '';
+			$_SESSION['folha']['filtro']['data_busca_periodo_inicio'] 	= '';
+			$_SESSION['folha']['filtro']['data_busca_periodo_final'] 	= '';
  			
  			if (!empty($row['usuarioid'])) {
  				$_SESSION['folha']['usuarioid']     = $row['usuarioid'];
