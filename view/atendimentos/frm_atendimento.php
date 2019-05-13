@@ -52,7 +52,7 @@
                      ?> 
 
                     <form action="atendimentos.php" method="post" name="cad_atendimento" id="cad_atendimento" enctype="multipart/form-data">
-
+                      
                     <div class="col s8">
                        <div class="row">
                         <div class="col s2">
@@ -148,7 +148,7 @@
                         <?php if (!empty($value['data_inicio_atend'])) { ?>
                         <div class="col s3">
                           <label for="data">Data Início</label>
-                          <input type="text" id="data" readonly="" name="data_inicio_atend" maxlength="255" value="<?php echo $value['data_inicio_atend']; ?>">
+                          <input type="text" id="data" readonly="" maxlength="255" value="<?php echo $value['data_inicio_atend']; ?>">
                         </div>
                         <?php } ?>
 
@@ -163,7 +163,7 @@
                         <?php if (!empty($value['data_fim_atend'])) { ?>
                         <div class="col s3">
                           <label for="data_fim_atend">Data Conclusão</label>
-                          <input id="data_fim" type="text" readonly="" maxlength="255" value="<?php echo $value['data_fim_atend']; ?>">
+                          <input id="data_fim" type="text" readonly="" maxlength="255" name="data_inicio_atend" value="<?php echo $value['data_fim_atend']; ?>">
                         </div>
                         <?php } ?>
 
@@ -193,7 +193,12 @@
                       <div class="input-field">
                       </div>
                         <input type="hidden" id="id" name="id" value="<?php echo $value['id']; ?>">
-                        <input type="hidden" id="data_inicio_atend" name="data_inicio_atend" value="<?php echo date("Y-m-d H:i:s"); ?>">
+                        <?php if (empty($value['data_inicio_atend'])) { ?>
+                          <input type="hidden" id="data_inicio_atend" name="data_inicio_atend" value="<?php echo date("Y-m-d H:i:s"); ?>">
+                        <?php } ?>
+                        <?php if (!empty($value['data_inicio_atend'])) { ?>
+                          <input type="hidden" id="data_inicio_atend" name="data_inicio_atend" value="<?php echo $value['inicio_atend'] ?>">
+                        <?php } ?>
                         <input type="hidden" id="id_usuarioatendente" name="id_usuarioatendente" value="<?php  echo $usuario_session['usuarioid'];?>">
                         <input type="hidden" id="aceite_encerramento" name="aceite_encerramento" value="<?php  echo $usuario_session['nome'];?>">
                         <input type="hidden" id="action" name="action" value="1">

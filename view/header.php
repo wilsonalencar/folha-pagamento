@@ -318,9 +318,11 @@
                                 <li>
                                     <a href="<?php echo app::dominio; ?>solicitacoes.php" class="active-menu">Abertura da Solicitação</a>
                                 </li>
+                                <?php if ($_SESSION['folha']['id_perfilusuario'] == funcionalidadeConst::PERFIL_ADMIN){ ?>
                                 <li>
                                     <a href="<?php echo app::dominio; ?>consulta_solicitacao.php" class="active-menu">Atendimento</a>
                                 </li>
+                                <?php } ?>
                             </ul>
                             <?php } ?>
                         </li>

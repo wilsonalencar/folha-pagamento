@@ -106,7 +106,10 @@ class solicitacao extends app
 			return false;
 		}
 
-		if (!empty($this->data_fim_atend)) {;
+		if (!empty($this->data_fim_atend)) {
+
+			$this->data_fim_atend .= ':00';
+			$this->data_fim_atend = str_replace('T', ' ', $this->data_fim_atend);
 
 			if ($this->data_fim_atend < $this->data_inicio_atend) {
 				$this->msg = "Data de Conclusão Inválida.";
@@ -221,8 +224,8 @@ class solicitacao extends app
 
 		}else{
 
-			$query = sprintf(" UPDATE solicitacao SET status_id = %d, id_usuarioatendente = %d, data_inicio_atend = '%s', descricao_atendimento = '%s' WHERE id = %d", 
-				$this->status_id, $this->id_usuarioatendente, $this->data_inicio_atend, utf8_encode($this->descricao_atendimento), $this->id);
+			$query = sprintf(" UPDATE solicitacao SET status_id = %d, id_usuarioatendente = %d, data_inicio_atend = '%s', aceite_encerramento = '%s', descricao_atendimento = '%s' WHERE id = %d", 
+				$this->status_id, $this->id_usuarioatendente, $this->data_inicio_atend, utf8_encode($this->aceite_encerramento),  utf8_encode($this->descricao_atendimento), $this->id);
 
 			if (!$conn->query($query)) {
 				$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -262,6 +265,7 @@ class solicitacao extends app
 				$row_geral['usuario_solicitante'] = utf8_decode($row_geral['usuario_solicitante']);
 				$row_geral['descricao_solicitacao'] = utf8_decode($row_geral['descricao_solicitacao']);
 				$row_geral['descricao_atendimento'] = utf8_decode($row_geral['descricao_atendimento']);
+				$row_geral['inicio_atend'] = $row_geral['data_inicio_atend'];
 				$row_geral['desc_evento'] = utf8_decode($row_geral['desc_evento']);
 				$timestamp = strtotime($row_geral['data_solicitacao']);
 				$row_geral['data_solicitacao'] = date("d/m/Y - H:i", $timestamp);
@@ -285,6 +289,7 @@ class solicitacao extends app
 			$row['usuario_solicitante'] = utf8_decode($row['usuario_solicitante']);
 			$row['descricao_solicitacao'] = utf8_decode($row['descricao_solicitacao']);
 			$row['descricao_atendimento'] = utf8_decode($row['descricao_atendimento']);
+			$row['inicio_atend'] = $row['data_inicio_atend'];
 			$row['desc_evento'] = utf8_decode($row['desc_evento']);
 			$row['nome_funcionario'] = utf8_decode($row['nome_funcionario']);
 			$timestamp = strtotime($row['data_solicitacao']);
@@ -331,6 +336,7 @@ class solicitacao extends app
 			$row_geral['nome_empresa'] = utf8_decode($row_geral['nome_empresa']);
 			$row_geral['usuario_solicitante'] = utf8_decode($row_geral['usuario_solicitante']);
 			$row_geral['descricao_solicitacao'] = utf8_decode($row_geral['descricao_solicitacao']);
+			$row_geral['descricao_atendimento'] = utf8_decode($row_geral['descricao_atendimento']);
 			$row_geral['desc_evento'] = utf8_decode($row_geral['desc_evento']);
 
 			if ($row_geral['data_fim_atend']) {
@@ -356,6 +362,7 @@ class solicitacao extends app
 			$row['nome_empresa'] = utf8_decode($row['nome_empresa']);
 			$row['usuario_solicitante'] = utf8_decode($row['usuario_solicitante']);
 			$row['descricao_solicitacao'] = utf8_decode($row['descricao_solicitacao']);
+			$row['descricao_atendimento'] = utf8_decode($row['descricao_atendimento']);
 			$row['desc_evento'] = utf8_decode($row['desc_evento']);
 			$row['nome_funcionario'] = utf8_decode($row['nome_funcionario']);
 
